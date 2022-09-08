@@ -12,12 +12,12 @@ public class UserModel  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String login,password;
+    private String username,password;
     private Boolean enabled;
     private Roles roles;
 
-    public UserModel(String login, String password,Roles roles,Boolean enabled) {
-        this.login = login;
+    public UserModel(String username, String password,Roles roles,Boolean enabled) {
+        this.username = username;
         this.password = password;
         this.roles = roles;
         this.enabled = enabled;
@@ -42,12 +42,12 @@ public class UserModel  {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -70,7 +70,7 @@ public class UserModel  {
     public String toString() {
         return "UserModel{" +
                 "id=" + id +
-                ", login='" + login + '\'' +
+                ", username='" + username + '\'' +
                 '}';
     }
 
@@ -79,11 +79,11 @@ public class UserModel  {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserModel userModel = (UserModel) o;
-        return Objects.equals(id, userModel.id) && Objects.equals(login, userModel.login) && Objects.equals(password, userModel.password);
+        return Objects.equals(id, userModel.id) && Objects.equals(username, userModel.username) && Objects.equals(password, userModel.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password);
+        return Objects.hash(id, username, password);
     }
 }

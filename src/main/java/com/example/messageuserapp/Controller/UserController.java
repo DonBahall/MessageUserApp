@@ -38,8 +38,8 @@ public class UserController {
         return "loginPage";
     }
     @PostMapping("/loginPage")
-    public String Login(@RequestParam String login, @RequestParam String password){
-        UserModel userModel = userRepository.findByLoginAndPassword(login, password).orElse(null);
+    public String Login(@RequestParam String username, @RequestParam String password){
+        UserModel userModel = userRepository.findByUsernameAndPassword(username, password).orElse(null);
         if(userModel != null) return "Chat";
         else return "redirect:/loginPage";
     }
