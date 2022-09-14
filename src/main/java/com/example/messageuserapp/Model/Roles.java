@@ -1,5 +1,5 @@
 package com.example.messageuserapp.Model;
 
 public enum Roles {
-    USER
+    USER,ADMIN
 }

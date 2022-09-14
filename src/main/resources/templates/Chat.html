@@ -6,5 +6,16 @@
 </head>
 <body>
 
+    <h1>Добавление комнаты</h1>
+    <a href="/new_room">Добавить комнату</a>
+<div class="container mt-5">
+    <h1>Просмотр комнат</h1>
+    <div th:each ="el : ${models}">
+        <h3 th:text="${el.nameOfRoom}"/>
+        <a th:href="'/Chat/' + ${el.id}">Войти в комнату</a>
+</div>
+
+</div>
+
 </body>
 </html>

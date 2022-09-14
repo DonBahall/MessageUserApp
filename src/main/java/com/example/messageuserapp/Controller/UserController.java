@@ -3,6 +3,7 @@ package com.example.messageuserapp.Controller;
 import com.example.messageuserapp.Model.Roles;
 import com.example.messageuserapp.Model.UserModel;
 import com.example.messageuserapp.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,38 +14,40 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository userRepository){
+    public UserController(UserRepository userRepository,PasswordEncoder passwordEncoder){
         this.userRepository=userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
     @GetMapping("/")
     public String mainPage(){
         return "WelcomePage";
     }
+
     @GetMapping("/registerPage")
     public String getRegister(Model model){
         model.addAttribute("Register",new UserModel());
         return "registerPage";
     }
     @PostMapping("/registerPage")
-    public String register( @RequestParam String RegLogin, @RequestParam String RegPassword ){
+    public String register( @RequestParam String RegLogin, @RequestParam String RegPassword ) {
     UserModel userModel = new UserModel(RegLogin, RegPassword, Roles.USER,true);
+    String password = this.passwordEncoder.encode(userModel.getPassword());
+    userModel.setPassword(password);
     userRepository.save(userModel);
-      return "redirect:/loginPage";
+      return "redirect:/login";
     }
-    @GetMapping("/loginPage")
+    @GetMapping("/login")
     public String getLogin(Model model){
         model.addAttribute("Login",new UserModel());
-        return "loginPage";
+        return "login";
     }
-    @PostMapping("/loginPage")
+    @PostMapping("/login")
     public String Login(@RequestParam String username, @RequestParam String password){
         UserModel userModel = userRepository.findByUsernameAndPassword(username, password).orElse(null);
         if(userModel != null) return "Chat";
-        else return "redirect:/loginPage";
+        else return "redirect:/login";
     }
-    @GetMapping("/Chat")
-    public String chat(){
-        return "Chat";
-    }
+
 }
