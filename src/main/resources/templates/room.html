@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Room</title>
+</head>
+<body>
+<div th:each = "elements : ${post}">
+    <form method="post">
+        <input type="text" name="message" placeholder="type here" required>
+        <a href="/Chat">to Chat</a>
+    </form>
+    <a th:href="'/Chat/' + ${elements.id} + '/edit' " class="btn btn-warning">Изменить название</a>
+    <form th:action ="'/Chat/' + ${elements.id} + '/delete'" method = "post">
+        <button class="btn btn-warning" type="submit" >Удалить</button>
+    </form>
+
+</div>
+
+</body>
+</html>

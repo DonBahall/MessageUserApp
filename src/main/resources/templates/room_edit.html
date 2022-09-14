@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post">
+    <h1>New room</h1>
+    <div th:each = "elements : ${post}">
+        <input type="text" th:value = "${elements.nameOfRoom}" name="nameOfRoom"placeholder="Введите название" class="form-control"><br>
+    <button type="submit" class="btn btn-success" >Изменить название</button>
+    </div>
+</form>
+</body>
+</html>
