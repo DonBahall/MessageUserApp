@@ -72,7 +72,7 @@ public class RoomController {
         return "redirect:/Chat/{id}";
     }
 
-    @DeleteMapping("/Chat/{id}/delete")
+    @PostMapping("/Chat/{id}/delete")
     public String RoomDelete(@PathVariable(value = "id") long id) {
         RoomModel post = repository.findById(id).orElseThrow();
         repository.delete(post);
