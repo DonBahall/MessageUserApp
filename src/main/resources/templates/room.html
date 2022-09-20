@@ -1,18 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src ='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script src = 'https://cdn.jsdelivr.net/npn/popper.js@1.16.0/dist/umd/popper.min.js'></script>
     <meta charset="UTF-8">
     <title>Room</title>
 </head>
+<script type="text/javascript">
+    $(document).ready(function (){
+        $.get('/getMessage',function(data){
+            console.log(data);
+            let table ="<table border = 1>"
+            for(i = 0;i < data.length;i++){
+                table = table +"<tr><td>"+ data[i].message + "</td>"
+            }
+            table = table +"</table>"
+            $("#test").html(table)
+        });
+    });
+</script>
 <body>
-<div th:each = "elements : ${post}">
+<div id="test"></div>
+<div th:each="elements : ${post}">
+
     <form method="post">
         <input type="text" name="message" placeholder="type here" required>
         <a href="/Chat">to Chat</a>
     </form>
     <a th:href="'/Chat/' + ${elements.id} + '/edit' " class="btn btn-warning">Изменить название</a>
-    <form th:action ="'/Chat/' + ${elements.id} + '/delete'" method = "post">
-        <button class="btn btn-warning" type="submit" >Удалить</button>
+    <form th:action="'/Chat/' + ${elements.id} + '/delete'" method="post">
+        <button class="btn btn-warning" type="submit">Удалить</button>
     </form>
 
 </div>

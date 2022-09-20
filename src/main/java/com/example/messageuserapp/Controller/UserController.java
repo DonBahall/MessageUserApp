@@ -49,5 +49,4 @@ public class UserController {
         if(userModel != null) return "Chat";
         else return "redirect:/login";
     }
-
 }
