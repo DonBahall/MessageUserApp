@@ -12,8 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -59,16 +62,20 @@ public class RoomController {
         Optional<RoomModel> post = repository.findById(id);
         ArrayList<RoomModel> res = new ArrayList<>();
         post.ifPresent(res::add);
-        model.addAttribute("post", res);
+        model.addAttribute("post",res);
+        model.addAttribute("atr",id);
         return "room";
     }
 
     @PostMapping("/Chat/{id}")
-    public String saveMessage(@PathVariable(value = "id") @RequestParam String message) throws InterruptedException {
-        CustomMessage message1 = new CustomMessage(message, LocalDateTime.now());
+    public String saveMessage(@PathVariable(value = "id")Long id, @RequestParam String message,Model model)
+            throws InterruptedException {
+        CustomMessage message1 = new CustomMessage(message, LocalDateTime.now(),id);
         messageRepository.save(message1);
         rabbitTemplate.convertAndSend(MQConfig.topicExchangeName, "foo.bar.baz", message);
         receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
+
+        System.out.println(id);
         return "redirect:/Chat/{id}";
     }
 

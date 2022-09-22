@@ -2,22 +2,24 @@
 <html lang="en">
 <head>
     <script src ='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
-    <script src = 'https://cdn.jsdelivr.net/npn/popper.js@1.16.0/dist/umd/popper.min.js'></script>
     <meta charset="UTF-8">
     <title>Room</title>
 </head>
-<script type="text/javascript">
+<script th:inline="javascript">
     $(document).ready(function (){
-        $.get('/getMessage',function(data){
-            console.log(data);
+        /*<![CDATA][*/
+        $.get('/getMessage?idroom=' + /*[[${atr}]]*/ "Test",function(data){
+            console.log(/*[[${atr}]]*/ "test");
             let table ="<table border = 1>"
             for(i = 0;i < data.length;i++){
-                table = table +"<tr><td>"+ data[i].message + "</td><td>" + data[i].getDate() +"</td>"
+                table = table +"<tr><td>"+ data[i].message + "</td><td>" + data[i].messageDate +"</td>"
             }
             table = table +"</table>"
             $("#test").html(table)
         });
+        /*]].*/
     });
+
 </script>
 <body>
 <div id="test"></div>

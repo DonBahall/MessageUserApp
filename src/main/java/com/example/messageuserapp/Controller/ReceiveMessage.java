@@ -4,8 +4,8 @@ import com.example.messageuserapp.Model.CustomMessage;
 import com.example.messageuserapp.repository.MessageRepository;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ReceiveMessage {
@@ -16,7 +16,7 @@ public class ReceiveMessage {
     }
 
     @RequestMapping(method = RequestMethod.GET,value = "/getMessage")
-    public List<CustomMessage> message() {
-        return new ArrayList<>(messageRepository.findAll());
+    public List<CustomMessage> message(@RequestParam Long idroom) {
+        return messageRepository.findAllByNumOfRoom(idroom);
     }
 }

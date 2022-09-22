@@ -1,12 +1,8 @@
 package com.example.messageuserapp.Model;
-
-
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,9 +20,12 @@ public class CustomMessage {
     private Long messageId;
     private String message;
     private LocalDateTime messageDate;
+    private Long numOfRoom;
 
-    public CustomMessage(String message, LocalDateTime messageDate) {
+    public CustomMessage(String message, LocalDateTime messageDate,Long numOfRoom) {
         this.message = message;
         this.messageDate = messageDate;
+        this.numOfRoom = numOfRoom;
     }
+
 }
