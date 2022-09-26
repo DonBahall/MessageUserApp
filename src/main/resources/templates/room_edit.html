@@ -6,10 +6,10 @@
 </head>
 <body>
 <form method="post">
-    <h1>New room</h1>
+        <h1>Edit room name</h1>
     <div th:each = "elements : ${post}">
         <input type="text" th:value = "${elements.nameOfRoom}" name="nameOfRoom"placeholder="Введите название" class="form-control"><br>
-    <button type="submit" class="btn btn-success" >Изменить название</button>
+    <button type="submit" class="btn btn-success" >Change name</button>
     </div>
 </form>
 </body>

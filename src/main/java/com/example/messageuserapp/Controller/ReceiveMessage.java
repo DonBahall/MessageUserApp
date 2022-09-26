@@ -3,9 +3,8 @@ package com.example.messageuserapp.Controller;
 import com.example.messageuserapp.Model.CustomMessage;
 import com.example.messageuserapp.repository.MessageRepository;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 public class ReceiveMessage {

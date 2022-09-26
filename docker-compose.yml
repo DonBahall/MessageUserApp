@@ -1,27 +1,34 @@
 version: '3.8'
 services:
+
+  docker-mysql:
+    image: mysql:debian
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+       - MYSQL_ROOT_PASSWORD=root
+       - MYSQL_DATABASE=messageApp
+
+  springboot-container:
+    image: docker-spring
+    build:
+      context: ./
+      dockerfile: -Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://docker-mysql:3306/messageApp
+      SPRING_RABBITMQ_HOST: rabbitmq
+    ports:
+      - "8080:8080"
+
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:3-management
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      port: 5672
+      username: guest
+      password: guest
     ports:
       - "5672:5672"
       - "15672:15672"
-  sender:
-    build: ./sender
-    container_name: sender
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./sender:/app
-    depends_on:
-      - rabbitmq
-  receiver:
-    build: ./receiver
-    container_name: receiver
-    ports:
-      - "8081:8081"
-    volumes:
-      - ./receiver:/app
-    depends_on:
-      - sender
-      - rabbitmq

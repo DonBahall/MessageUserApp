@@ -15,7 +15,6 @@ public class Receiver {
     @RabbitListener
     public void receiveMessage(String message) {
         log.info(message);
-        System.out.println(message);
         latch.countDown();
     }
 

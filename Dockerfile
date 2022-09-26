@@ -1,6 +1,7 @@
-FROM maven:3.5.4-jdk-18
-WORKDIR /app
-COPY . /app/
-RUN mvn clean package -DskipTests
+FROM openjdk:18-jdk-alpine
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
 EXPOSE 8080
-CMD ["mvn", "spring-boot:run"]
+ENTRYPOINT ["java","-jar","/app.jar"]

@@ -1,6 +1,5 @@
 package com.example.messageuserapp.Controller;
 
-
 import com.example.messageuserapp.Model.CustomMessage;
 import com.example.messageuserapp.Model.RoomModel;
 import com.example.messageuserapp.MqConfig.MQConfig;
@@ -11,12 +10,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -34,15 +29,15 @@ public class RoomController {
         this.receiver = receiver;
     }
 
-    @GetMapping("/Chat")
-    public String chat(Model model) {
+    @GetMapping("/lobby")
+    public String lobby(Model model) {
         Iterable<RoomModel> models = repository.findAll();
         model.addAttribute("models", models);
-        return "Chat";
+        return "lobby";
     }
 
     @GetMapping("/new_room")
-    public String newRoom(Model model) {
+    public String new_room(Model model) {
         model.addAttribute("room", new RoomModel());
         return "new_room";
     }
@@ -51,13 +46,13 @@ public class RoomController {
     public String save_room(@RequestParam String nameOfRoom) {
         RoomModel model = new RoomModel(nameOfRoom);
         repository.save(model);
-        return "redirect:/Chat";
+        return "redirect:/lobby";
     }
 
-    @GetMapping("/Chat/{id}")
-    public String getRoom(@PathVariable(value = "id") long id, Model model) {
+    @GetMapping("/lobby/{id}")
+    public String get_room(@PathVariable(value = "id") long id, Model model) {
         if (!repository.existsById(id)) {
-            return "redirect:/Chat";
+            return "redirect:/lobby";
         }
         Optional<RoomModel> post = repository.findById(id);
         ArrayList<RoomModel> res = new ArrayList<>();
@@ -67,29 +62,27 @@ public class RoomController {
         return "room";
     }
 
-    @PostMapping("/Chat/{id}")
-    public String saveMessage(@PathVariable(value = "id")Long id, @RequestParam String message,Model model)
+    @PostMapping("/lobby/{id}")
+    public String save_message(@PathVariable(value = "id")Long id, @RequestParam String message)
             throws InterruptedException {
         CustomMessage message1 = new CustomMessage(message, LocalDateTime.now(),id);
         messageRepository.save(message1);
         rabbitTemplate.convertAndSend(MQConfig.topicExchangeName, "foo.bar.baz", message);
         receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
-
-        System.out.println(id);
-        return "redirect:/Chat/{id}";
+        return "redirect:/lobby/{id}";
     }
 
-    @PostMapping("/Chat/{id}/delete")
-    public String RoomDelete(@PathVariable(value = "id") long id) {
+    @PostMapping("/lobby/{id}/delete")
+    public String room_delete(@PathVariable(value = "id") long id) {
         RoomModel post = repository.findById(id).orElseThrow();
         repository.delete(post);
-        return "redirect:/Chat";
+        return "redirect:/lobby";
     }
 
-    @GetMapping("/Chat/{id}/edit")
-    public String blogEdit(@PathVariable(value = "id") long id, Model model) {
+    @GetMapping("/lobby/{id}/edit")
+    public String blog_edit(@PathVariable(value = "id") long id, Model model) {
         if (!repository.existsById(id)) {
-            return "redirect:/Chat";
+            return "redirect:/lobby";
         }
         Optional<RoomModel> post = repository.findById(id);
         ArrayList<RoomModel> res = new ArrayList<>();
@@ -98,11 +91,11 @@ public class RoomController {
         return "room_edit";
     }
 
-    @PostMapping("/Chat/{id}/edit")
-    public String RoomUpdate(@PathVariable(value = "id") long id, @RequestParam String nameOfRoom) {
+    @PostMapping("/lobby/{id}/edit")
+    public String room_update(@PathVariable(value = "id") long id, @RequestParam String nameOfRoom) {
         RoomModel post = repository.findById(id).orElseThrow();
         post.setNameOfRoom(nameOfRoom);
         repository.save(post);
-        return "redirect:/Chat";
+        return "redirect:/lobby";
     }
 }

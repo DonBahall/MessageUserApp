@@ -3,6 +3,7 @@ package com.example.messageuserapp.Model;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "usr")
 public class UserModel  {
     @Id
@@ -27,10 +29,6 @@ public class UserModel  {
         this.roles = roles;
         this.enabled = enabled;
     }
-
-    public UserModel() {
-    }
-
     @Override
     public String toString() {
         return "UserModel{" +

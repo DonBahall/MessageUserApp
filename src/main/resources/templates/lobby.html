@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Room lobby</title>
+</head>
+<body>
+<h1>Add new room</h1>
+<a href="/new_room">add room</a>
+<div class="container mt-5">
+    <h1>View rooms</h1>
+    <div th:each="el : ${models}">
+        <a th:href="'/lobby/' + ${el.id}"><h3 th:text="${el.nameOfRoom}"/></a>
+    </div>
+</div>
+</body>
+</html>

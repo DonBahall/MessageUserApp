@@ -21,16 +21,16 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
     @GetMapping("/")
-    public String mainPage(){
-        return "WelcomePage";
+    public String main_page(){
+        return "welcome_page";
     }
 
-    @GetMapping("/registerPage")
-    public String getRegister(Model model){
+    @GetMapping("/register_page")
+    public String get_register(Model model){
         model.addAttribute("Register",new UserModel());
-        return "registerPage";
+        return "register_page";
     }
-    @PostMapping("/registerPage")
+    @PostMapping("/register_page")
     public String register( @RequestParam String RegLogin, @RequestParam String RegPassword ) {
     UserModel userModel = new UserModel(RegLogin, RegPassword, Roles.USER,true);
     String password = this.passwordEncoder.encode(userModel.getPassword());
@@ -39,14 +39,14 @@ public class UserController {
       return "redirect:/login";
     }
     @GetMapping("/login")
-    public String getLogin(Model model){
+    public String get_login(Model model){
         model.addAttribute("Login",new UserModel());
         return "login";
     }
     @PostMapping("/login")
-    public String Login(@RequestParam String username, @RequestParam String password){
+    public String login(@RequestParam String username, @RequestParam String password){
         UserModel userModel = userRepository.findByUsernameAndPassword(username, password).orElse(null);
-        if(userModel != null) return "Chat";
+        if(userModel != null) return "lobby";
         else return "redirect:/login";
     }
 }
